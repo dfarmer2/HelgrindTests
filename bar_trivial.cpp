@@ -1,20 +1,22 @@
-
 /* This is the most trivial test I could think of that involves
    barriers.  If H fails to notice the pthread_barrier_wait call then
    it will report a race.  Correct behaviour is not to report a race
    (there isn't one.) */
-#define _GNU_SOURCE
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <unistd.h>
 
+namespace bar_trivial
+{
+
 int x = 0;
 
 pthread_barrier_t bar;
 
-void* child_fn ( void* arg )
+void* child_fn (void* arg)
 {
    long r, n = (long)arg;
 
@@ -32,7 +34,7 @@ void* child_fn ( void* arg )
 
 #define NTHR 2
 
-int main ( void )
+int bar_trivial(void)
 {
    long i, r;
    pthread_t thr[NTHR];
@@ -52,6 +54,7 @@ int main ( void )
 
    r = pthread_barrier_destroy(&bar); assert(!r);
 
-   printf("x = %d\n", x);
-   return 0;
+   return x;
 }
+
+};
