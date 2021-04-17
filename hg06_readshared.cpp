@@ -3,6 +3,9 @@
 #include <pthread.h>
 #include <assert.h>
 
+namespace hg06_readshared
+{
+
 static int shared;
 
 static void *t1(void *v)
@@ -15,7 +18,7 @@ static void *t2(void *v)
 	return (void *)(long)(shared + 55);
 }
 
-int main()
+int hg06_readshared()
 {
 	pthread_t a, b;
 
@@ -27,7 +30,7 @@ int main()
 	pthread_join(a, NULL);
 	pthread_join(b, NULL);
 
-	assert(shared == 22);
-
-	return 0;
+	return shared;
 }
+
+};

@@ -3,6 +3,9 @@
 #include <pthread.h>
 #include <unistd.h>
 
+namespace hg04_race
+{
+
 static int shared;
 
 static void *th(void *v)
@@ -12,7 +15,7 @@ static void *th(void *v)
 	return 0;
 }
 
-int main()
+int hg04_race(void)
 {
 	pthread_t a, b;
 
@@ -23,5 +26,7 @@ int main()
 	pthread_join(a, NULL);
 	pthread_join(b, NULL);
 
-	return 0;
+	return shared;
 }
+
+};

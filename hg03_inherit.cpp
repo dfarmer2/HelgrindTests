@@ -8,6 +8,9 @@
 #include <pthread.h>
 #include <unistd.h>
 
+namespace hg03_inherit
+{
+
 static volatile int shared[2];
 
 static void *t1(void *v)
@@ -31,7 +34,7 @@ static void *t2(void *v)
 	return 0;
 }
 
-int main(void)
+int hg03_inherit(void)
 {
 	pthread_t a, b;
 	volatile int ret = 0;
@@ -61,7 +64,11 @@ int main(void)
 				   so we can't touch shared[1] yet */
 
 	pthread_join(b, NULL);
+	
+	printf("ret = %i\n", ret);
 
 
 	return ret;
 }
+
+};

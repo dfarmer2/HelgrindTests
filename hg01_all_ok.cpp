@@ -2,11 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+#include <stdio.h>
+
+namespace hg01_all_ok
+{
 
 static pthread_mutex_t mx = PTHREAD_MUTEX_INITIALIZER;
 
 static int shared = 0;
 static char *ptr;
+static bool malloced = false;
 
 static void breakme(void)
 {
@@ -19,11 +24,13 @@ static void *th(void *v)
 	pthread_mutex_lock(&mx);
 	shared++;
         if (shared == 1) {
-           ptr = malloc (1008);
+           ptr = (char*)malloc (1008);
+           malloced = true;
            breakme();
         }
         if (shared == 2) {
            free (ptr);
+           malloced = false;
            breakme();
         }
 	pthread_mutex_unlock(&mx);
@@ -31,7 +38,7 @@ static void *th(void *v)
 	return 0;
 }
 
-int main()
+bool hg01_all_ok(void)
 {
 	pthread_t a, b;
 
@@ -44,5 +51,7 @@ int main()
 	pthread_join(a, NULL);
 	pthread_join(b, NULL);
 
-	return 0;
+	return malloced;
 }
+
+};
