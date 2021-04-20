@@ -40,6 +40,9 @@
 
 #include <pthread.h>
 
+namespace tc21_pthonce
+{
+
 /* With more than 2 threads, the precise error reports vary between
    platforms, in terms of the number of races detected.  Make life
    simple and just have 2 threads and so just 1 race. */
@@ -75,7 +78,7 @@ void* child ( void* argV ) {
    return NULL;
 }
 
-int main ( void ) {
+int tc21_pthonce(void) {
    int       *id_arg, i, r;
    pthread_t threads[NUM_THREADS];
 
@@ -88,10 +91,13 @@ int main ( void ) {
       assert(!r);
    }
 
+   int prejoinUnprotected = unprotected2;
    for (i = 0; i < NUM_THREADS; i++) {
       pthread_join(threads[i], NULL);
       /* printf("main: joined to thread %d\n", i); */
    }
    printf("main: Goodbye\n");
-   return 0;
+   return prejoinUnprotected;
 }
+
+};

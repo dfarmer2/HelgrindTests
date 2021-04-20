@@ -6,6 +6,9 @@
 /* Simple test program, no race: parent only modified x after child
    has modified it and then joined with the parent.  Tests simple
    thread lifetime segment handling. */
+   
+namespace tc02_simple_tls
+{
 
 int x = 0;
 
@@ -16,7 +19,7 @@ void* child_fn ( void* arg )
    return NULL;
 }
 
-int main ( void )
+int tc02_simple_tls(void)
 {
    pthread_t child;
 
@@ -35,5 +38,7 @@ int main ( void )
    /* Now back in parent's segment */
    x++;
 
-   return 0;
+   return x;
 }
+
+};

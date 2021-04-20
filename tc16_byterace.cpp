@@ -4,6 +4,9 @@
 
 /* Simple demonstration of lockset tracking at byte granularity. */
 
+namespace tc16_byterace
+{
+
 char bytes[10];
 
 void* child_fn ( void* arg )
@@ -14,7 +17,7 @@ void* child_fn ( void* arg )
    return NULL;
 }
 
-int main ( void )
+int tc16_byterace(void)
 {
    const struct timespec delay = { 0, 100 * 1000 * 1000 };
    int i;
@@ -32,11 +35,15 @@ int main ( void )
    /* Unprotected relative to child, but harmful; same bytes */
    for (i = 0; i < 3; i++)
       bytes[3*i + 1] ++; /* accesses: 1 4(race!) 7 */
+      
+   int potentialProblem = bytes[4];
 
    if (pthread_join(child, NULL)) {
       perror("pthread join");
       exit(1);
    }
 
-   return 0;
+   return potentialProblem;
 }
+
+};

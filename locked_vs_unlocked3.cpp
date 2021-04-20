@@ -16,6 +16,9 @@
    is to check that the lock showing mechanism shows the
    lock-number-of-times-held count. */
 
+namespace locked_vs_unlocked3
+{
+
 pthread_mutex_t mx;
 
 int x = 0;
@@ -39,7 +42,7 @@ void* child_fn2 ( void* arg )
    return NULL;
 }
 
-int main ( int argc, char** argv )
+int locked_vs_unlocked3(void)
 {
    int r;
    pthread_t child1, child2;
@@ -58,5 +61,7 @@ int main ( int argc, char** argv )
 
    r= pthread_mutex_destroy(&mx);  assert(!r);
 
-   return 0;
+   return x;
 }
+
+};

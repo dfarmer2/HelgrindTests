@@ -8,6 +8,9 @@
    thread has a lock, the other doesn't.  Running w/ command line args
    switches the has/has-not thread around, so as to test lockset
    retention in both the history mechanism and the primary errors. */
+   
+namespace locked_vs_unlocked1
+{
 
 pthread_mutex_t mx = PTHREAD_MUTEX_INITIALIZER;
 
@@ -21,30 +24,32 @@ void* child_fn ( void* arg )
    return NULL;
 }
 
-int main ( int argc, char** argv )
+int locked_vs_unlocked1(void)
 {
-   int sw = argc > 1;
+   int sw = 1;
    pthread_t child1, child2;
 
    if (pthread_create(&child1, NULL, child_fn, (void*)(long)(sw ? 0 : 1))) {
       perror("pthread_create1");
-      exit(1);
+      return -1;
    }
    sleep(1); /* ensure repeatable results */
    if (pthread_create(&child2, NULL, child_fn, (void*)(long)(sw ? 1 : 0))) {
       perror("pthread_create1");
-      exit(1);
+      return -1;
    }
 
    if (pthread_join(child1, NULL)) {
       perror("pthread join1");
-      exit(1);
+      return -1;
    }
 
    if (pthread_join(child2, NULL)) {
       perror("pthread join2");
-      exit(1);
+      return -1;
    }
 
-   return 0;
+   return x;
 }
+
+};

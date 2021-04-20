@@ -7,6 +7,9 @@
    with no locking.  This is the program shown in Fig 2 of the
    original Eraser paper by Savage et al. */
 
+namespace tc05_simple_race
+{
+
 int y = 0, v = 0;
 pthread_mutex_t mu = PTHREAD_MUTEX_INITIALIZER;
 
@@ -20,7 +23,7 @@ void* child_fn ( void* arg )
    return NULL;
 }
 
-int main ( void )
+int tc05_simple_race(void)
 {
    const struct timespec delay = { 0, 100 * 1000 * 1000 };
    pthread_t child;
@@ -34,11 +37,15 @@ int main ( void )
    pthread_mutex_lock( &mu );
    v = v + 1;
    pthread_mutex_unlock( &mu );
+   
+   int prejoinY = y;
 
    if (pthread_join(child, NULL)) {
       perror("pthread join");
       exit(1);
    }
 
-   return 0;
+   return prejoinY;
 }
+
+};

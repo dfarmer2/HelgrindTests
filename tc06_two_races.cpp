@@ -6,6 +6,9 @@
 /* Simple test program, has two races.  A happens-before detector can only
    ever detect one of them, though.  XXX: apparently not so; Drd and H 3.4 detect both. */
 
+namespace tc06_two_races
+{
+
 int unprot1 = 0, unprot2 = 0, prot = 0;
 pthread_mutex_t mu = PTHREAD_MUTEX_INITIALIZER;
 
@@ -19,7 +22,7 @@ void* child_fn ( void* arg )
    return NULL;
 }
 
-int main ( void )
+int tc06_two_races(void)
 {
    pthread_t child;
 
@@ -33,11 +36,15 @@ int main ( void )
    prot ++;
    pthread_mutex_unlock( &mu );
    unprot2 ++;
+   
+   int potentialError = unprot1;
 
    if (pthread_join(child, NULL)) {
       perror("pthread join");
       exit(1);
    }
 
-   return 0;
+   return potentialError;
 }
+
+};

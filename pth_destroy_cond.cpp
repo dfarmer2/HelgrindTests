@@ -5,6 +5,10 @@
 // This test verifies that helgrind detects (and does not crash) when
 // the guest application wrongly destroys a cond var being waited
 // upon.
+
+namespace pth_destroy_cond
+{
+
 pthread_mutex_t mutex;
 pthread_cond_t cond;
 pthread_t thread; 
@@ -20,7 +24,7 @@ void *ThreadFunction(void *ptr)
    return NULL; 
 }
 
-int main() 
+int pth_destroy_cond() 
 { 
    pthread_mutex_init(&mutex, NULL); 
    pthread_cond_init(&cond, NULL);
@@ -35,5 +39,7 @@ int main()
    pthread_join(thread, NULL); 
    pthread_mutex_destroy(&mutex); 
    printf("finished\n");
-   return 0; 
+   return ready; 
 }
+
+};

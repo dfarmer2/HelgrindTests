@@ -5,6 +5,9 @@
 
 /* Simple test program, has a race.  Parent and child both modify x
    with no locking. */
+   
+namespace tc01_simple_race
+{
 
 int x = 0;
 
@@ -15,7 +18,7 @@ void* child_fn ( void* arg )
    return NULL;
 }
 
-int main ( void )
+int tc01_simple_race(void)
 {
    const struct timespec delay = { 0, 100 * 1000 * 1000 };
    pthread_t child;
@@ -26,11 +29,15 @@ int main ( void )
    nanosleep(&delay, 0);
    /* Unprotected relative to child */
    x++;
+   
+   int preJoinX = x;
 
    if (pthread_join(child, NULL)) {
       perror("pthread join");
       exit(1);
    }
 
-   return 0;
+   return preJoinX;
 }
+
+};

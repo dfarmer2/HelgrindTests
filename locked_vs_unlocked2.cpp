@@ -12,6 +12,9 @@
    error reporting mechanism in that it can no longer show the deleted
    lock in the error message.x */
 
+namespace locked_vs_unlocked2
+{
+
 pthread_mutex_t mx1a;
 pthread_mutex_t mx1b;
 pthread_mutex_t mx2a;
@@ -48,7 +51,7 @@ void* child_fn2 ( void* arg )
    return NULL;
 }
 
-int main ( int argc, char** argv )
+int locked_vs_unlocked2(void)
 {
    pthread_t child1, child2;
    int r;
@@ -69,5 +72,7 @@ int main ( int argc, char** argv )
    r= pthread_mutex_destroy(&mx2a);  assert(!r);
    r= pthread_mutex_destroy(&mx2b);  assert(!r);
 
-   return 0;
+   return x;
 }
+
+};
